@@ -1,4 +1,7 @@
-# Private candidate data containing PII
+# Private candidate data directory (PII, references, personal archives)
+private/
+
+# Local fallback profile (if placed in root)
 profile.typ
 
 # Compiled artifacts & renders
@@ -6,6 +9,3 @@ profile.typ
 preview*.png
 pagecheck*
 temp_preview*
-
-# Archive directory containing personal reference material
-archive/
