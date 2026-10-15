@@ -1,0 +1,11 @@
+# Private candidate data containing PII
+profile.typ
+
+# Compiled artifacts & renders
+*.pdf
+preview*.png
+pagecheck*
+temp_preview*
+
+# Archive directory containing personal reference material
+archive/
