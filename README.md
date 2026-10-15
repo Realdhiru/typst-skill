@@ -2,85 +2,97 @@
 
 A minimalist, high-density, single-page technical resume engine built with [Typst](https://typst.app/).
 
-Designed for software engineers, systems programmers, and DevOps practitioners who require a deterministic, ATS-compliant, single-page resume with precise typesetting without LaTeX overhead.
+Designed for software engineers and systems builders who require a deterministic, ATS-compliant, single-page resume with precise typesetting without LaTeX overhead.
 
 ---
 
 ## Features
 
-- **Decoupled Architecture:** Layout and typography (`resume.typ`) are strictly separated from candidate data (`profile.typ`). Personal data is excluded via `.gitignore` by default.
-- **Deterministic 1-Page Layout:** Balanced typographic margins and vertical line height calibrated to fit technical experience onto a single page.
-- **ATS Compliant:** Generates a linear, machine-parseable text stream without multi-column table constructs or unparsed glyphs.
-- **Sub-Second Compilation:** Live-reload preview on document modification via `./watch.sh`.
-- **Integrated Agent Playbook:** Includes `resume-SKILL.md` defining operational standards for tailoring bullet points to target job specifications.
+- **Decoupled Architecture:** Core typesetting and layout (`resume.typ`) are decoupled from candidate data (`profile.typ`). Personal data is kept outside git tracking.
+- **Deterministic 1-Page Layout:** Typographic rhythm calibrated to fit extensive technical experience onto exactly one page.
+- **ATS Compliant:** Generates a clean, linear text stream without nested tables, text boxes, or unparsed glyphs.
+- **Sub-Second Live Rebuilds:** Hot-reloads on save via `./watch.sh`.
+- **Integrated AI Agent Playbook:** Includes `resume-SKILL.md` containing operational rules for aligning bullets with job descriptions.
 
 ---
 
-## Requirements
+## Repository Structure
 
-The project uses Typst. On systems with Nix installed, dependencies are resolved dynamically via the shell wrapper:
+The public repository contains only the engine code and schema templates:
 
-```bash
-# Handled via `nix shell nixpkgs#typst` inside compile scripts
+```
+typst-skill/
+├── resume.typ          # Core typesetting and layout engine
+├── profile.example.typ # Public schema template with placeholder data
+├── resume-SKILL.md     # AI agent playbook and operational standards
+├── compile.sh          # One-step compilation script
+├── watch.sh            # Live-reload watch daemon
+├── Makefile            # Build targets (all, watch, clean)
+├── .gitignore          # Rules preventing accidental upload of personal data
+└── README.md           # Documentation
 ```
 
-Standalone binary installation options are detailed in the [upstream repository](https://github.com/typst/typst):
+---
+
+## Quick Start (For Cloned Repositories)
+
+### 1. Requirements
+
+The project uses [Typst](https://github.com/typst/typst). On systems with Nix, dependencies are resolved dynamically:
+
+```bash
+# Executed automatically via `nix shell nixpkgs#typst` inside compile scripts
+```
+
+On other systems, install `typst` using your package manager or cargo:
 
 ```bash
 cargo install --locked typst-cli
 ```
 
----
+### 2. Configure Profile Data
 
-## Usage
+The layout engine imports candidate data from `profile.typ`. You can either create it directly in the project root (it is git-ignored) or store it in your private local directory and symlink it.
 
-### 1. Configure Profile Data
-
-Copy the example schema and populate candidate fields:
-
+#### Option A: Direct local file
 ```bash
 cp profile.example.typ profile.typ
 ```
 
-Populate contact coordinates, work history, projects, and education in `profile.typ`.
+#### Option B: Dedicated private directory (Recommended for git contributors)
+Keep your personal data outside the repository tree:
+```bash
+# 1. Create a private directory outside your git tree
+mkdir -p ~/.local/share/resume-private
 
-### 2. Compilation and Live Preview
+# 2. Copy the template and edit it
+cp profile.example.typ ~/.local/share/resume-private/profile.typ
+$EDITOR ~/.local/share/resume-private/profile.typ
+
+# 3. Symlink it into the repository
+ln -s ~/.local/share/resume-private/profile.typ ./profile.typ
+```
+
+### 3. Build & Preview
 
 ```bash
-# Single build -> resume.pdf
+# Compile to resume.pdf
 ./compile.sh
 
-# Continuous rebuild daemon
+# Or start the live-reload watch daemon
 ./watch.sh
 ```
 
-View the generated PDF (`resume.pdf`) using any Wayland/X11 document viewer (e.g., Zathura, Evince).
-
----
-
-## Project Structure
-
-```
-.
-├── resume.typ          # Core layout engine and typography definitions
-├── profile.example.typ # Public schema template with mock data
-├── profile.typ         # Candidate profile data (untracked)
-├── resume.pdf          # Compiled output document (untracked)
-├── resume-SKILL.md     # Operational standard and tailoring playbook
-├── compile.sh          # Batch compilation script
-├── watch.sh            # Inotify-driven compile daemon
-├── Makefile            # POSIX make targets (all, watch, preview, clean)
-└── .gitignore          # Exclusion rules for local artifacts and PII
-```
+View the generated PDF (`resume.pdf`) in your preferred document viewer (e.g., Zathura, Evince, or VS Code PDF preview).
 
 ---
 
 ## Privacy Policy
 
 The repository is configured to exclude personal data from source control:
-- `profile.typ` is ignored.
-- Generated binaries (`*.pdf`) and raster previews (`*.png`) are ignored.
-- Only the core layout engine, build tooling, and schema definitions are tracked.
+- `profile.typ` is ignored by `.gitignore`.
+- Generated artifacts (`*.pdf`, `*.png`) are ignored.
+- Only the engine layout, mock schema, and build scripts are tracked.
 
 ---
 
