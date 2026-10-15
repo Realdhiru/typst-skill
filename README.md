@@ -1,83 +1,89 @@
-# 📄 Typst Resume Engine
+# Typst Resume Engine
 
-A minimalist, high-density, single-page technical resume engine built with **[Typst](https://typst.app/)**.
+A minimalist, high-density, single-page technical resume engine built with [Typst](https://typst.app/).
 
-Designed for software engineers, DevOps, and systems builders who want an ATS-compliant, single-page resume with pixel-perfect typesetting—without LaTeX bloat or manual layout hassles.
-
----
-
-## ✨ Features
-
-- **🛡️ Privacy-First (Decoupled Data):** Formatting (`resume.typ`) is completely separated from candidate data (`profile.typ`). Your PII is git-ignored by default, making this repository safe to publish publicly.
-- **⚡ Strict 1-Page Layout:** Balanced margins and vertical rhythm engineered to fit an entire technical career onto **exactly one page**.
-- **🤖 ATS-Optimized:** Linear text layer without fragile multi-column tables, text boxes, or unparsed glyphs.
-- **🔥 Live Preview:** Sub-50ms instant re-renders while typing via `./watch.sh`.
-- **🧠 Built-In AI Agent Skill:** Includes `resume-SKILL.md`, enabling AI pair programmers to tailor bullets and re-rank skills against any Job Description.
+Designed for software engineers, systems programmers, and DevOps practitioners who require a deterministic, ATS-compliant, single-page resume with precise typesetting without LaTeX overhead.
 
 ---
 
-## 🚀 Quick Start
+## Features
 
-### 1. Requirements
+- **Decoupled Architecture:** Layout and typography (`resume.typ`) are strictly separated from candidate data (`profile.typ`). Personal data is excluded via `.gitignore` by default.
+- **Deterministic 1-Page Layout:** Balanced typographic margins and vertical line height calibrated to fit technical experience onto a single page.
+- **ATS Compliant:** Generates a linear, machine-parseable text stream without multi-column table constructs or unparsed glyphs.
+- **Sub-Second Compilation:** Live-reload preview on document modification via `./watch.sh`.
+- **Integrated Agent Playbook:** Includes `resume-SKILL.md` defining operational standards for tailoring bullet points to target job specifications.
 
-You only need **Typst**. If you use Nix:
+---
+
+## Requirements
+
+The project uses Typst. On systems with Nix installed, dependencies are resolved dynamically via the shell wrapper:
+
 ```bash
-# Handled automatically inside compile scripts via `nix shell nixpkgs#typst`
+# Handled via `nix shell nixpkgs#typst` inside compile scripts
 ```
-Or install standalone Typst from [typst.app](https://github.com/typst/typst):
+
+Standalone binary installation options are detailed in the [upstream repository](https://github.com/typst/typst):
+
 ```bash
 cargo install --locked typst-cli
-# or via your package manager (brew, pacman, apt)
 ```
 
-### 2. Setup Your Profile
+---
 
-Copy the public example template to your private profile:
+## Usage
+
+### 1. Configure Profile Data
+
+Copy the example schema and populate candidate fields:
+
 ```bash
 cp profile.example.typ profile.typ
 ```
-Open `profile.typ` and fill in your details (name, contact links, experience, and projects).
 
-### 3. Build & Preview
+Populate contact coordinates, work history, projects, and education in `profile.typ`.
+
+### 2. Compilation and Live Preview
 
 ```bash
-# Compile once to resume.pdf
+# Single build -> resume.pdf
 ./compile.sh
 
-# Or start the live-reload watch daemon
+# Continuous rebuild daemon
 ./watch.sh
 ```
 
-Open `resume.pdf` in any viewer (e.g., Zathura, Evince, VS Code preview). Changes to `profile.typ` or `resume.typ` will recompile immediately on save.
+View the generated PDF (`resume.pdf`) using any Wayland/X11 document viewer (e.g., Zathura, Evince).
 
 ---
 
-## 🛠️ Project Structure
+## Project Structure
 
 ```
 .
-├── resume.typ          # Layout engine & styling (safe for git)
-├── profile.example.typ # Generic dummy data template (safe for git)
-├── profile.typ         # Your actual private information (git-ignored)
-├── resume.pdf          # Compiled output PDF (git-ignored)
-├── resume-SKILL.md     # Engineering guidelines & ATS tailoring playbook
-├── compile.sh          # One-step compile script
-├── watch.sh            # Live-reload watch daemon
-├── Makefile            # Build shortcuts (`make`, `make watch`, `make clean`)
-└── .gitignore          # Keeps private PII off GitHub
+├── resume.typ          # Core layout engine and typography definitions
+├── profile.example.typ # Public schema template with mock data
+├── profile.typ         # Candidate profile data (untracked)
+├── resume.pdf          # Compiled output document (untracked)
+├── resume-SKILL.md     # Operational standard and tailoring playbook
+├── compile.sh          # Batch compilation script
+├── watch.sh            # Inotify-driven compile daemon
+├── Makefile            # POSIX make targets (all, watch, preview, clean)
+└── .gitignore          # Exclusion rules for local artifacts and PII
 ```
 
 ---
 
-## 🔒 Privacy & GitHub Usage
+## Privacy Policy
 
-This repo is pre-configured with a `.gitignore` that prevents your personal identifiable information from being staged:
-- `profile.typ` (your actual data) is **ignored**.
-- `*.pdf` and temporary preview images are **ignored**.
-- Only the generic engine, documentation, and `profile.example.typ` will be pushed.
+The repository is configured to exclude personal data from source control:
+- `profile.typ` is ignored.
+- Generated binaries (`*.pdf`) and raster previews (`*.png`) are ignored.
+- Only the core layout engine, build tooling, and schema definitions are tracked.
 
 ---
 
-## 📜 License
+## License
 
-MIT License. Feel free to fork, adapt, and use for your own job search!
+MIT
