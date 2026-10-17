@@ -1,11 +1,7 @@
-# Private candidate data directory (PII, references, personal archives)
+# Personal data, generated resume, previews, and reference archive
 private/
 
-# Local fallback profile (if placed in root)
-profile.typ
-
-# Compiled artifacts & renders
+# Older output location, retained as a safeguard for stale builds
 *.pdf
-preview*.png
 pagecheck*
 temp_preview*

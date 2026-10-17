@@ -1,95 +1,27 @@
-# Typst Resume Engine
+# Resume builder
 
-A minimalist, high-density, single-page technical resume engine built with [Typst](https://typst.app/).
+This project turns your resume information into a PDF with Typst. The normal workflow is AI-first: tell your AI assistant what information to add or change, have it update the files, and ask it to rebuild the PDF.
 
-Designed for software engineers and systems builders who require a deterministic, ATS-compliant, single-page resume with precise typesetting without LaTeX overhead.
+## The three files to know
 
----
+- `private/profile.typ` — your resume content and personal details. It is private and ignored by Git.
+- `resume.typ` — the visual design and formatting rules. Ask the AI to edit this when you want a design or layout change.
+- `private/resume.pdf` — the generated resume. Open this to review the result.
 
-## Features
+`compile.sh` is the one build command. Other files are project setup or Git settings; you do not need to use them in your normal workflow.
 
-- **Decoupled Architecture:** Core typesetting and layout (`resume.typ`) are decoupled from candidate data (`private/profile.typ`). Personal data is stored locally in `private/` and excluded via `.gitignore`.
-- **Deterministic 1-Page Layout:** Typographic rhythm calibrated to fit extensive technical experience onto exactly one page.
-- **ATS Compliant:** Generates a clean, linear text stream without nested tables, text boxes, or unparsed glyphs.
-- **Sub-Second Live Rebuilds:** Hot-reloads on save via `./watch.sh`.
-- **Integrated AI Agent Playbook:** Includes `resume-SKILL.md` containing operational rules for aligning bullets with job descriptions.
+## Using the resume builder
 
----
+1. Tell your AI assistant what to change, for example: “Add this project to my resume…” or “Make the section headings smaller.”
+2. The assistant edits `private/profile.typ` for content or `resume.typ` for formatting, then runs `./compile.sh`.
+3. Open `private/resume.pdf` and check the result. If something needs adjustment, describe it to the assistant.
 
-## Repository Structure
+You can also edit `private/profile.typ` yourself. Save it, then run `./compile.sh` from this project folder. Open the refreshed `private/resume.pdf`. You do not need to run a separate sync or watch command.
 
-The public repository contains only the engine code and schema templates:
+## Build requirement
 
-```
-typst-skill/
-├── resume.typ          # Core typesetting and layout engine
-├── profile.example.typ # Public schema template with mock data
-├── resume-SKILL.md     # AI agent playbook and operational standards
-├── compile.sh          # One-step compilation script
-├── watch.sh            # Live-reload watch daemon
-├── Makefile            # Build targets (all, watch, clean)
-├── .gitignore          # Rules preventing accidental upload of personal data
-└── README.md           # Documentation
-```
+The build script uses an installed `typst` command when available. Otherwise it uses Nix to run Typst. Install either Typst or Nix once if neither is installed.
 
----
+## Privacy
 
-## Setup & Usage (For Cloned Repositories)
-
-### 1. Requirements
-
-The project uses [Typst](https://github.com/typst/typst). On systems with Nix, dependencies are resolved dynamically:
-
-```bash
-# Executed automatically via `nix shell nixpkgs#typst` inside compile scripts
-```
-
-On other systems, install `typst` via your package manager or cargo:
-
-```bash
-cargo install --locked typst-cli
-```
-
-### 2. Configure Your Private Profile
-
-The layout engine imports candidate data from `profile.typ`. To keep your personal details completely portable across any machine while never committing them to git:
-
-```bash
-# 1. Create your local private directory (ignored by git)
-mkdir -p private
-
-# 2. Copy the template and edit your details
-cp profile.example.typ private/profile.typ
-$EDITOR private/profile.typ
-
-# 3. Link it so resume.typ can resolve it
-ln -sf private/profile.typ profile.typ
-```
-
-### 3. Build & Preview
-
-```bash
-# Compile to resume.pdf
-./compile.sh
-
-# Or start the live-reload watch daemon
-./watch.sh
-```
-
-View the generated PDF (`resume.pdf`) in your preferred document viewer (e.g., Zathura, Evince, or VS Code PDF preview).
-
----
-
-## Privacy Policy
-
-The repository is configured to exclude personal data from source control:
-- The entire `private/` directory is ignored by `.gitignore`.
-- The root `profile.typ` symlink is ignored.
-- Generated artifacts (`*.pdf`, `*.png`) are ignored.
-- Only the engine layout, mock schema, and build scripts are tracked.
-
----
-
-## License
-
-MIT
+`private/` contains personal details, generated resumes, previews, and reference material. Git ignores the entire directory, so it stays on your machine and is not included in commits. Keep your backups of this directory if you need them; ignored files are not stored in the repository history.

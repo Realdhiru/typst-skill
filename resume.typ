@@ -1,4 +1,4 @@
-#import "profile.typ": candidate, summary, projects, experience, community, technical_skills, education
+#import "private/profile.typ": candidate, summary, projects, experience, community, technical_skills, education
 
 #set page(
   paper: "us-letter",
